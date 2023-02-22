@@ -8,25 +8,53 @@ import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 
+/*
+In this class we will be able to create "pre" and "post" condition
+for ALL the SCENARIOS and even STEPS.
+ */
 public class Hooks {
 
-
-    @Before  //it should come form cucumber java NOT JUNIT
-    public void setUp() {
-        System.out.println("SET UP BEFORE EACH SCENARIO");
+    //import the @Before coming from io.cucumber.java
+    @Before (order = 1)
+    public void setupMethod(){
+        System.out.println("---> @Before: RUNNING BEFORE EACH SCENARIO");
     }
 
+    // @Before (value = "@ui", order = 2 )
+    public void login_scenario_before(){
 
-    @After  //it should come form cucumber java NOT JUNIT
-    public void tearDown(Scenario scenario)  {
+        System.out.println("---> @Before: RUNNING BEFORE EACH SCENARIO");
+    }
 
-        //  if (scenario.isFailed()){
-        byte[] data = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
-        scenario.attach(data,"image/png", scenario.getName());
-        //}
+    /*
+    @After will be executed automatically after EVERY scenario in the project.
+     */
+    @After()
+    public void teardownMethod(Scenario scenario){
 
+        if (scenario.isFailed()) {
 
-        BrowserUtils.sleep(3);
+            byte[] screenshot = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
+            scenario.attach(screenshot, "image/png", scenario.getName());
+
+        }
+
+        System.out.println("---> @After: RUNNING AFTER EACH SCENARIO");
+
+        BrowserUtils.sleep(2);
         Driver.closeDriver();
+
     }
+
+    //@BeforeStep
+    public void setupStep(){
+        System.out.println("-----> @BeforeSTEP : Running before each step!");
+    }
+
+    //@AfterStep
+    public void teardownStep(){
+        System.out.println("-----> @AfterSTEP : Running after each step!");
+    }
+
+
 }

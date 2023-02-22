@@ -16,7 +16,5 @@ import org.junit.runner.RunWith;
         publish = true    //in order to generate public link for reports
 
 )
-
-
 public class CukesRunner {
 }
